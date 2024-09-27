@@ -9,6 +9,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        phone: { min: "460px" },
+        tablet: { min: "768px" },
+        laptop: { min: "980px" },
+        desktop: { min: "1200px" },
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
