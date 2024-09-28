@@ -1,19 +1,23 @@
 import { ReactNode, useState } from "react";
 import { cn } from "../../helper";
 
-import {
-  CalendarHeader,
-  CalendarChevron,
-  CalendarHeaderChooser,
-  CalendarWeekday,
-  CalendarDay,
-  ChevronDownBoldIcon,
-} from "../calendar";
 import { MONTHS } from "../constants/constants";
 import { useConfigContext } from "../provider/config-provider";
-import { useSingleContext, SingleProvider } from "../provider/single-provider";
-import { SingleDayColorType, SingleCalendarValue } from "../types/types";
+import {
+  SingleContextType,
+  SingleProvider,
+  useSingleContext,
+} from "../provider/single-provider";
+import { SingleCalendarValue, SingleDayColorType } from "../types/types";
 import { generateYearsArray, getMonthDays } from "../utils/utils";
+import {
+  CalendarChevron,
+  CalendarDay,
+  CalendarHeader,
+  CalendarHeaderChooser,
+  CalendarWeekday,
+  ChevronDownBoldIcon,
+} from "./calendar";
 
 function SingleHeader() {
   const { minDate, maxDate } = useConfigContext();
@@ -21,8 +25,8 @@ function SingleHeader() {
 
   const year = curMonth.getFullYear();
   const years = generateYearsArray(
-    minDate?.getFullYear() ?? new Date().getFullYear(),
-    maxDate?.getFullYear() ?? new Date().getFullYear() + 1
+    (minDate as Date).getFullYear(),
+    (maxDate as Date).getFullYear()
   );
 
   function handleYearChange(value: number) {
@@ -38,17 +42,16 @@ function SingleHeader() {
     const newMonth =
       method === "plus" ? curMonth.getMonth() + 1 : curMonth.getMonth() - 1;
     const nextDate = new Date(year, newMonth, 1);
-    if (nextDate.getFullYear() < minDate.getFullYear()) return;
+    if (nextDate.getFullYear() < (minDate as Date).getFullYear()) return;
     setCurMonth(nextDate);
   };
 
-  console.log({ curMonth: curMonth.getFullYear().toString() });
   const isDisabledMin =
-    curMonth.getFullYear() === minDate.getFullYear() &&
-    curMonth.getMonth() <= minDate.getMonth();
+    curMonth.getFullYear() === (minDate as Date).getFullYear() &&
+    curMonth.getMonth() <= (minDate as Date).getMonth();
   const isDisabledMax =
-    curMonth.getFullYear() === maxDate.getFullYear() &&
-    curMonth.getMonth() >= maxDate.getMonth();
+    curMonth.getFullYear() === (maxDate as Date).getFullYear() &&
+    curMonth.getMonth() >= (maxDate as Date).getMonth();
 
   return (
     <CalendarHeader className="h-10 pt-2 px-10">
@@ -60,15 +63,15 @@ function SingleHeader() {
         aria-label="previous month"
       />
 
-      <div className=" w-1/2 flex flex-row gap-2 justify-center">
+      <div className=" w-fit flex flex-row gap-2 justify-center">
         {/* chooser for year */}
         <CalendarHeaderChooser
           disabled={false}
           selectItems={years}
           type="year"
+          value={curMonth.getFullYear().toString()}
           placeholder={curMonth.getFullYear().toString()}
           icon={<ChevronDownBoldIcon color="#ED64A6" />}
-          value={curMonth.getFullYear().toString()}
           onValueChange={(value) => {
             handleYearChange(value);
           }}
@@ -85,6 +88,7 @@ function SingleHeader() {
           onValueChange={(value) => {
             handleMonthChange(value);
           }}
+          className="min-w-[60px]"
         />
       </div>
       <CalendarChevron
@@ -115,10 +119,10 @@ function SingleCalendarComponent({
   const { value, curMonth, handleSelect } = useSingleContext();
 
   const DAY_COLOR = (dayColor as SingleDayColorType) || {
-    idle: "text-slate-300",
+    idle: "text-slate-200",
     active: "text-white-500",
-    activeBefore: "bg-primary-500  absolute z-[-1] size-10 rounded-full",
-    disabled: "text-neutral-200",
+    activeBefore: "bg-primary-700/50  absolute z-[-1] size-10 rounded-full",
+    disabled: "text-slate-500",
   };
 
   const year = curMonth.getFullYear();
@@ -128,7 +132,7 @@ function SingleCalendarComponent({
   return (
     <div
       className={cn(
-        "desktop:w-[284px] laptop:w-[284px] min-w-[284px] w-full border rounded border-stone-300",
+        "desktop:w-[284px] laptop:w-[284px] min-w-[284px] w-full border rounded border-slate-500",
         className
       )}
       {...props}
@@ -210,7 +214,11 @@ function SingleCalendarRoot(props: SingleCalendarProps) {
     handleSelect,
   };
 
-  return <SingleProvider value={singleContext}>{children}</SingleProvider>;
+  return (
+    <SingleProvider value={singleContext as SingleContextType}>
+      {children}
+    </SingleProvider>
+  );
 }
 
-export { SingleCalendarRoot, SingleHeader, SingleCalendarComponent };
+export { SingleCalendarComponent, SingleCalendarRoot, SingleHeader };

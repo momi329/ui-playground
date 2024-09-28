@@ -1,26 +1,29 @@
-import { ReactNode, useRef, useEffect, ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithoutRef, ReactNode, useEffect, useRef } from "react";
 import { cn } from "../../helper";
 
-import { Drawer } from "../../drawer";
-import { CalendarWeekday, CalendarChevron } from "../calendar";
+import { Drawer } from "../../drawer/drawer";
 import { useConfigContext } from "../provider/config-provider";
 import { useRangeContext } from "../provider/range-provider";
-import { transDateIntoString, getMonthRangeArray } from "../utils/utils";
+import { getMonthRangeArray, transDateIntoString } from "../utils/utils";
+import { CalendarChevron, CalendarWeekday } from "./calendar";
 import { RangeCalendarMHeader } from "./range-calendar-header";
 import { RangeCalendarItem } from "./range-calendar-item";
 
-type RangeMCalendarInputProps = ComponentPropsWithoutRef<'div'>
-function RangeMCalendarInput({ className, ...props }: RangeMCalendarInputProps) {
-  const { value, setChangingPosition } = useRangeContext()
+type RangeMCalendarInputProps = ComponentPropsWithoutRef<"div">;
+function RangeMCalendarInput({
+  className,
+  ...props
+}: RangeMCalendarInputProps) {
+  const { value, setChangingPosition } = useRangeContext();
   return (
-    <div className={cn('', className)} {...props}>
+    <div className={cn("", className)} {...props}>
       <label className="relative">
         <span className="absolute top-0 left-2 ">START</span>
         <input
           type="text"
-          className="w-45 h-8 border border-slate-200 rounded pl-13 text-slate-200"
-          value={transDateIntoString(value.start)}
-          onFocus={() => setChangingPosition('start')}
+          className="w-45 h-8 border border-slate-500 rounded pl-13 text-slate-200"
+          value={transDateIntoString(value.start as Date)}
+          onFocus={() => setChangingPosition("start")}
           readOnly
         />
       </label>
@@ -28,37 +31,44 @@ function RangeMCalendarInput({ className, ...props }: RangeMCalendarInputProps) 
         <span className="absolute top-0 left-2 ">END</span>
         <input
           type="text"
-          className="w-45 h-8 border border-slate-200 rounded pl-13 text-slate-200"
-          value={transDateIntoString(value.end)}
-          onFocus={() => setChangingPosition('end')}
+          className="w-45 h-8 border border-slate-500 rounded pl-13 text-slate-200"
+          value={transDateIntoString(value.end as Date)}
+          onFocus={() => setChangingPosition("end")}
           readOnly
         />
       </label>
     </div>
-  )
+  );
 }
 
-type RangeCalendarMDrawerHeaderProps = ComponentPropsWithoutRef<'div'>
+type RangeCalendarMDrawerHeaderProps = ComponentPropsWithoutRef<"div">;
 
-function RangeCalendarMDrawerHeader({ className, ...props }: RangeCalendarMDrawerHeaderProps) {
-  const { value, changingPosition, setChangingPosition } = useRangeContext()
+function RangeCalendarMDrawerHeader({
+  className,
+  ...props
+}: RangeCalendarMDrawerHeaderProps) {
+  const { value, changingPosition, setChangingPosition } = useRangeContext();
 
   return (
-    <div className={cn("pt-2 m-0 text-[17px] font-medium h-14 flex flex-row justify-center border-b border-b-neutral-200", className)}
+    <div
+      className={cn(
+        "pt-2 m-0 text-[17px] font-medium h-14 flex flex-row justify-center border-b border-slate-500",
+        className
+      )}
       {...props}
     >
       <button
         type="button"
         className={cn(
-          'border-b-2 w-24 flex flex-col justify-center text-center box-border',
+          "border-b-2 w-24 flex flex-col justify-center text-center box-border",
           {
-            'border-b-[2px] border-b-primary-500':
-              changingPosition && changingPosition === 'start',
-            'border-b-2 border-white-500':
-              changingPosition && changingPosition === 'end'
+            "border-b-[2px] border-b-primary-500":
+              changingPosition && changingPosition === "start",
+            "border-b-2 border-white-500":
+              changingPosition && changingPosition === "end",
           }
         )}
-        onClick={() => setChangingPosition('start')}
+        onClick={() => setChangingPosition("start")}
       >
         <div className="h5-regular text-slate-400 w-full">去程日期</div>
         <div className="text-primary-500 h4-regular pb-1 h-6 w-full">
@@ -70,15 +80,15 @@ function RangeCalendarMDrawerHeader({ className, ...props }: RangeCalendarMDrawe
       <button
         type="button"
         className={cn(
-          'border-b-2 w-24 flex flex-col justify-center text-center box-border',
+          "border-b-2 w-24 flex flex-col justify-center text-center box-border",
           {
-            'border-b-[2px] border-b-primary-500':
-              changingPosition && changingPosition === 'end',
-            'border-b-2 border-white-500':
-              changingPosition && changingPosition === 'start'
+            "border-b-[2px] border-b-primary-500":
+              changingPosition && changingPosition === "end",
+            "border-b-2 border-white-500":
+              changingPosition && changingPosition === "start",
           }
         )}
-        onFocus={() => setChangingPosition('end')}
+        onFocus={() => setChangingPosition("end")}
       >
         <div className="h5-regular text-slate-400 w-full">回程日期</div>
         <div className="text-primary-500 h4-regular pb-1  h-6 w-full">
@@ -87,31 +97,24 @@ function RangeCalendarMDrawerHeader({ className, ...props }: RangeCalendarMDrawe
         </div>
       </button>
     </div>
-  )
+  );
 }
 
-type RangeCalendarMDrawerProps = { inputControl: ReactNode }
+type RangeCalendarMDrawerProps = { inputControl: ReactNode };
 
-
-function RangeCalendarMDrawer({
-  inputControl
-}: RangeCalendarMDrawerProps) {
+function RangeCalendarMDrawer({ inputControl }: RangeCalendarMDrawerProps) {
   const { minDate, maxDate } = useConfigContext();
-  const {
-    value,
-    open,
-    setOpen,
-    handleSelect,
-    curPosition } = useRangeContext()
+
+  const { value, open, setOpen, handleSelect, curPosition } = useRangeContext();
 
   const monthRefs = useRef<HTMLDivElement[]>([]);
 
-  const monthArr = getMonthRangeArray(minDate, maxDate);
+  const monthArr = minDate && maxDate && getMonthRangeArray(minDate, maxDate);
 
   const RangeCalendarComponentProps = {
     value,
     handleSelect,
-    curPosition
+    curPosition,
   };
 
   useEffect(() => {
@@ -126,18 +129,19 @@ function RangeCalendarMDrawer({
     }, 0);
   }, [open]);
 
+  if (!monthArr) return null;
 
   return (
     <Drawer.Root open={open} onOpenChange={setOpen}>
       <Drawer.Trigger asChild>
-        <div className='size-fit'>
-          {inputControl}
-        </div>
+        <div className="size-fit">{inputControl}</div>
       </Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Overlay color="black" />
+        <Drawer.Title className="hidden">Title</Drawer.Title>
+        <Drawer.Description className="hidden">Description</Drawer.Description>
         <Drawer.Content
-          className="bg-white-500 p-0"
+          className="bg-black p-0"
           open={open}
           slideDirection="right"
           duration="700"
@@ -149,13 +153,13 @@ function RangeCalendarMDrawer({
           </div>
           <div className="flex flex-col overflow-scroll h-[calc(100vh-170px)] relative">
             {monthArr.map((item, index) => {
-              const key = item.toDateString()
+              const key = item.getFullYear() + "-" + item.getMonth();
               return (
                 <RangeCalendarItem
                   key={key}
+                  monthKey={key}
                   ref={(ref) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                    monthRefs.current[index] = ref;
+                    monthRefs.current[index] = ref as HTMLDivElement;
                   }}
                   className="border-b"
                   curMonth={item}
@@ -191,6 +195,8 @@ function RangeCalendarMDrawer({
   );
 }
 
-
-
-export { RangeCalendarMDrawer, RangeCalendarMDrawerHeader, RangeMCalendarInput };
+export {
+  RangeCalendarMDrawer,
+  RangeCalendarMDrawerHeader,
+  RangeMCalendarInput,
+};

@@ -1,6 +1,6 @@
 import { cn } from "../../helper";
-import { CalendarHeader, CalendarChevron } from "../calendar";
 import { useConfigContext } from "../provider/config-provider";
+import { CalendarChevron, CalendarHeader } from "./calendar";
 
 type RangeCalendarHeaderProps = {
   direction: "left" | "right";
@@ -16,8 +16,8 @@ export function RangeCalendarHeader({
   handleSwitch,
 }: RangeCalendarHeaderProps) {
   const { minDate, maxDate } = useConfigContext();
-  const isDisabledMin = curMonth.getTime() < minDate.getTime();
-  const isDisabledMax = curMonth.getTime() > maxDate.getTime() - 1;
+  const isDisabledMin = curMonth.getTime() < (minDate as Date).getTime();
+  const isDisabledMax = curMonth.getTime() > (maxDate as Date).getTime() - 1;
 
   return (
     <CalendarHeader className="p-1 min-h-8 relative">
@@ -33,7 +33,7 @@ export function RangeCalendarHeader({
 
       <div className="m-auto">
         <span>{curMonth.getFullYear()} 年</span>
-        <span>{curMonth.getMonth() + 1}月</span>
+        <span>{curMonth.getMonth() + 1} 月</span>
       </div>
       {direction === "right" && (
         <CalendarChevron
@@ -50,10 +50,10 @@ export function RangeCalendarHeader({
 
 export function RangeCalendarMHeader({ curMonth }: { curMonth: Date }) {
   return (
-    <CalendarHeader className="p-1 min-h-8  shadow-black shadow-md sticky top-0 bg-white-500 z-10">
-      <div className="m-auto h5-regular text-slate-500 flex items-center">
-        <span>{curMonth.getFullYear()}年 </span>
-        <span>{curMonth.getMonth() + 1}月</span>
+    <CalendarHeader className="p-1 min-h-8  border-b border-b-slate-500 sticky top-0 bg-black z-10">
+      <div className="m-auto h5-regular text-slate-300 flex items-center">
+        <span>{curMonth.getFullYear()} 年 </span>
+        <span>{curMonth.getMonth() + 1} 月 </span>
         <CalendarChevron className="[&>*]:fill-slate-400 rotate-[270deg]" />
       </div>
     </CalendarHeader>

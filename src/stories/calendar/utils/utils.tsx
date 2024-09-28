@@ -58,7 +58,7 @@ export function generateYearsArray(
   endYear: number
 ): string[] {
   const yearsArray: string[] = [];
-  for (let year = startYear; year < endYear; year += 1) {
+  for (let year = startYear; year <= endYear; year += 1) {
     yearsArray.push(`${year}`);
   }
   return yearsArray;
