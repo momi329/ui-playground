@@ -1,6 +1,16 @@
-
-import { ReactNode, createContext, useMemo, useContext, Dispatch, SetStateAction } from "react";
-import { RangeCalendarValue, RangeDayColorType, RangePosition } from "../types/types";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useContext,
+  useMemo,
+} from "react";
+import {
+  RangeCalendarValue,
+  RangeDayColorType,
+  RangePosition,
+} from "../types/types";
 
 interface RangeCalendarComponentProps {
   value: RangeCalendarValue;
@@ -10,19 +20,18 @@ interface RangeCalendarComponentProps {
   curPosition?: RangePosition;
   handleSelect?: (day: Date) => void;
   defaultMonth?: Date;
-};
+}
 
 export interface RangeCalendarMProps {
-  changingPosition: 'start' | 'end'
-  setChangingPosition: Dispatch<SetStateAction<'start' | 'end'>>
+  changingPosition: "start" | "end";
+  setChangingPosition: Dispatch<SetStateAction<"start" | "end">>;
   open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>
-};
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}
 
-type RangeContextType = RangeCalendarComponentProps & RangeCalendarMProps
+type RangeContextType = RangeCalendarComponentProps & RangeCalendarMProps;
 
-
-const RangeContext = createContext<RangeContextType>(null);
+const RangeContext = createContext<RangeContextType>({} as RangeContextType);
 
 interface ProviderProps {
   children: React.ReactNode;
@@ -43,7 +52,7 @@ function RangeProvider({ children, value }: ProviderProps) {
 const useRangeContext = () => {
   const context = useContext(RangeContext);
   if (!context) {
-    throw Error('useConfigContext should be used in ConfigContext Provider');
+    throw Error("useConfigContext should be used in ConfigContext Provider");
   }
   return context;
 };
@@ -51,10 +60,12 @@ const useRangeContext = () => {
 const RangeCalendarContext = {
   RangeContext,
   RangeProvider,
-  useRangeContext
-}
+  useRangeContext,
+};
 export {
-  RangeCalendarContext, type RangeContextType, RangeContext,
+  RangeCalendarContext,
+  RangeContext,
   RangeProvider,
-  useRangeContext
-}
+  useRangeContext,
+  type RangeContextType,
+};

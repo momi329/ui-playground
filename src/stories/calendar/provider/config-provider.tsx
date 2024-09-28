@@ -1,5 +1,5 @@
-import { createContext, useContext, useMemo } from 'react';
-import { RangeDayColorType, SingleDayColorType } from '../types/types';
+import { createContext, useContext, useMemo } from "react";
+import { RangeDayColorType, SingleDayColorType } from "../types/types";
 
 export type ConfigContextType = {
   minDate?: Date;
@@ -12,7 +12,9 @@ export type ConfigContextType = {
   dayColor?: SingleDayColorType | RangeDayColorType;
 };
 
-export const ConfigContext = createContext<ConfigContextType>(null);
+export const ConfigContext = createContext<ConfigContextType>(
+  {} as ConfigContextType
+);
 
 interface ProviderProps {
   children: React.ReactNode;
@@ -33,8 +35,7 @@ export function CalenderRoot({ children, value }: ProviderProps) {
 export const useConfigContext = () => {
   const context = useContext(ConfigContext);
   if (!context) {
-    throw Error('useConfigContext should be used in ConfigContext Provider');
+    throw Error("useConfigContext should be used in ConfigContext Provider");
   }
   return context;
 };
-

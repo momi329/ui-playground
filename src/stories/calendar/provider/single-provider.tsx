@@ -1,4 +1,4 @@
-import { createContext, useMemo, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 
 type SingleContextType = {
   value: Date;
@@ -8,8 +8,7 @@ type SingleContextType = {
   handleSelect: (day: Date) => void;
 };
 
-
-const SingleContext = createContext<SingleContextType>(null);
+const SingleContext = createContext<SingleContextType>({} as SingleContextType);
 
 interface ProviderProps {
   children: React.ReactNode;
@@ -30,7 +29,7 @@ function SingleProvider({ children, value }: ProviderProps) {
 const useSingleContext = () => {
   const context = useContext(SingleContext);
   if (!context) {
-    throw Error('useSingleContext should be used in ConfigContext Provider');
+    throw Error("useSingleContext should be used in ConfigContext Provider");
   }
   return context;
 };
@@ -38,10 +37,12 @@ const useSingleContext = () => {
 const SingleCalendarContext = {
   SingleContext,
   SingleProvider,
-  useSingleContext
-}
+  useSingleContext,
+};
 export {
-  SingleCalendarContext, type SingleContextType, SingleContext,
+  SingleCalendarContext,
+  SingleContext,
   SingleProvider,
-  useSingleContext
-}
+  useSingleContext,
+  type SingleContextType,
+};

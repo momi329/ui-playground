@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { cn } from "../../helper";
 
-import { RangeProvider } from "../provider/range-provider";
+import { RangeContextType, RangeProvider } from "../provider/range-provider";
 import {
   RangeCalendarValue,
   RangeDayColorType,
@@ -69,9 +69,8 @@ function RangeCalendarRoot(props: CalendarProps) {
     open,
     setOpen,
   };
-
   return (
-    <RangeProvider value={RangeProviderValue}>
+    <RangeProvider value={RangeProviderValue as RangeContextType}>
       <div className={cn(className, "flex-row gap-2")}>{children}</div>
     </RangeProvider>
   );
