@@ -1,8 +1,8 @@
 /* eslint-disable react/display-name */
 "use client";
 
-import { forwardRef } from "react";
 import { Slot } from "@radix-ui/react-slot";
+import { forwardRef } from "react";
 
 type ButtonElement = React.ElementRef<"button">;
 type ButtonProps = React.ComponentPropsWithoutRef<"button"> & {

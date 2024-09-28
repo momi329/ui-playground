@@ -22,11 +22,11 @@ type ButtonProps = React.ComponentPropsWithoutRef<typeof BaseButton> & {
 const buttonBaseStyle = "inline-flex items-center justify-center";
 
 const buttonSizeStyles = {
-  xs: "h-5 py-1 px-2",
-  sm: "h-7 py-2 px-1",
-  md: "h-8 py-2 px-6",
-  lg: "h-9 py-2 px-6 ",
-  xl: "h-10 py-3 px-6",
+  xs: "h-7 py-2 px-3",
+  sm: "h-8 py-3 px-2",
+  md: "h-9 py-3 px-7",
+  lg: "h-10 py-3 px-7 ",
+  xl: "h-11 py-4 px-7",
 };
 
 const buttonColorStyles = {
