@@ -2,9 +2,9 @@
 "use client";
 
 import {
-  useContext,
-  forwardRef,
   createContext,
+  forwardRef,
+  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -14,20 +14,22 @@ import {
 import { cn } from "../../helper";
 
 import {
-  SliderRootElement,
-  SliderRootProps,
-  SliderContextType,
+  InnerRailElement,
+  InnerRailProps,
   InputRangeElement,
   InputRangeProps,
   RailProps,
-  InnerRailElement,
-  InnerRailProps,
+  SliderContextType,
+  SliderRootElement,
+  SliderRootProps,
 } from "../types/slider-types";
 
 /* -------------------------------------------------------------------------------------------------
  * SliderRoot
  * --- --------------------------------------------------------------------------------------------*/
-export const SliderContext = createContext<SliderContextType>({} as SliderContextType);
+export const SliderContext = createContext<SliderContextType>(
+  {} as SliderContextType
+);
 const SliderRoot = forwardRef<SliderRootElement, SliderRootProps>(
   (
     {
@@ -72,11 +74,12 @@ const SliderRoot = forwardRef<SliderRootElement, SliderRootProps>(
     const handleClick = useMemo(() => {
       return (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         const newPosition = Math.floor(e.pageX);
-
         if (newPosition <= 0) return;
 
-        let value =
-          Math.floor((newPosition - sliderPosition) / widthPerStep) * step + min;
+        let value = Math.floor(
+          ((newPosition - sliderPosition) / widthPerStep) * step + min
+        );
+
         if (value <= min) value = min;
         if (value >= max) value = max;
 
@@ -89,7 +92,17 @@ const SliderRoot = forwardRef<SliderRootElement, SliderRootProps>(
           setMaxValue(value);
         }
       };
-    }, [sliderPosition, widthPerStep, step, min, max, minValue, maxValue, setMinValue, setMaxValue]);
+    }, [
+      sliderPosition,
+      widthPerStep,
+      step,
+      min,
+      max,
+      minValue,
+      maxValue,
+      setMinValue,
+      setMaxValue,
+    ]);
 
     const getSliderRect = useMemo(() => {
       return () => {
@@ -104,16 +117,11 @@ const SliderRoot = forwardRef<SliderRootElement, SliderRootProps>(
     }, [setSliderWidth, setSliderPosition]);
 
     const handleTouch = useMemo(() => {
-      return (
-        e: React.TouchEvent<HTMLDivElement>,
-        type: "less" | "more"
-      ) => {
+      return (e: React.TouchEvent<HTMLDivElement>, type: "less" | "more") => {
         const sliderRect = getSliderRect();
         if (!sliderRect) return;
         const { position } = sliderRect;
-        const newPosition = Math.floor(
-          e.changedTouches?.[0]?.clientX ?? 0
-        );
+        const newPosition = Math.floor(e.changedTouches?.[0]?.clientX ?? 0);
 
         if (newPosition <= 0) return;
         let value =
@@ -129,8 +137,19 @@ const SliderRoot = forwardRef<SliderRootElement, SliderRootProps>(
         }
         setIsDragging(type);
       };
-    }, [getSliderRect, widthPerStep, step, min, max, maxValue, minValue, setMinValue, setMaxValue, setIsDragging]);
-    
+    }, [
+      getSliderRect,
+      widthPerStep,
+      step,
+      min,
+      max,
+      maxValue,
+      minValue,
+      setMinValue,
+      setMaxValue,
+      setIsDragging,
+    ]);
+
     const handleDrag = useMemo(() => {
       return (e: MouseEvent) => {
         const sliderRect = getSliderRect();
@@ -151,7 +170,18 @@ const SliderRoot = forwardRef<SliderRootElement, SliderRootProps>(
           setMaxValue(value);
         }
       };
-    }, [getSliderRect, isDragging, widthPerStep, step, min, max, maxValue, minValue, setMinValue, setMaxValue]);
+    }, [
+      getSliderRect,
+      isDragging,
+      widthPerStep,
+      step,
+      min,
+      max,
+      maxValue,
+      minValue,
+      setMinValue,
+      setMaxValue,
+    ]);
     useEffect(() => {
       getSliderRect();
     }, []);
@@ -203,7 +233,25 @@ const SliderRoot = forwardRef<SliderRootElement, SliderRootProps>(
         handleClick,
         handleTouch,
       }),
-      [minValue, setMinValue, maxValue, setMaxValue, min, max, step, allowEqualMinMax, sliderWidth, sliderPosition, isDragging, totalSteps, minPosition, maxPosition, handleDrag, handleClick, handleTouch]
+      [
+        minValue,
+        setMinValue,
+        maxValue,
+        setMaxValue,
+        min,
+        max,
+        step,
+        allowEqualMinMax,
+        sliderWidth,
+        sliderPosition,
+        isDragging,
+        totalSteps,
+        minPosition,
+        maxPosition,
+        handleDrag,
+        handleClick,
+        handleTouch,
+      ]
     );
 
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
@@ -300,4 +348,4 @@ const Slider = {
   Rail,
   InnerRail,
 };
-export { Slider, SliderRoot, InputRange, Rail, InnerRail };
+export { InnerRail, InputRange, Rail, Slider, SliderRoot };
