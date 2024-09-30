@@ -24,6 +24,18 @@ const meta: Meta<typeof CalenderRoot> = {
     startText: "去程",
     endText: "回程",
     weekdays: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    dayColor: {
+      idle: "text-slate-200",
+      active: `text-white-500`,
+      disabled: "text-slate-500",
+      isRangeStart: `rounded-none text-white-500`,
+      isRangeBefore:
+        "bg-primary-700 bg-opacity-25 z-[-3] absolute w-1/2 h-full bg-opacity-25 ",
+      isRangeAfter:
+        "bg-primary-700 desktop:size-10 laptop:size-10  size-[45px] rounded-full absolute z-[-2]",
+      isRangeEnd: `rounded-none text-white-500 `,
+      isRange: `bg-primary-700 bg-opacity-25 rounded-none `,
+    },
   },
   argTypes: {
     minDate: {
