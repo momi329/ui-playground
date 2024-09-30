@@ -1,21 +1,33 @@
 import { Meta } from "@storybook/blocks";
-import Image from "next/image";
+
+import "./index.css";
 
 <Meta title="Welcome ✨" />
 
-<div className="sb-section sb-socials">
+<div className="wrapper">
+<div className="jiji-container">
   <h1>Hello ! I'm Momi 🌷</h1>
+  <img
+    src="https://media1.tenor.com/m/R7a0AjgHUZ4AAAAC/cat-kitty.gif"
+    alt="jiji"
+    class="jiji"
+  />
+</div>
 
-  <h2>Motivation</h2>
-  <p>
-    The need to use existing components across multiple products required significant customization, which made the components increasingly complex and difficult to maintain. To solve this, we developed our own components, inspired by Radix UI’s design approach.
-  </p>
-  
-  <h2>Implementation</h2>
-  <p>
-    The implementation of the components is based on the principles of
-    modularity and reusability. The components are designed to be as flexible as
-    possible, allowing for a high degree of customization.
-  </p>
-  
+{" "}
+
+<h2>Motivation</h2>
+<div className="content">
+  The need to use existing components across multiple products required
+  significant customization, which made the components increasingly complex and
+  difficult to maintain. To solve this, we developed our own components,
+  inspired by Radix UI’s design approach.
+</div>
+
+<h2>Implementation</h2>
+<div className="content">
+  The implementation of the components is based on the principles of
+  modularity and reusability. The components are designed to be as flexible as
+  possible, allowing for a high degree of customization.
+</div>
 </div>
