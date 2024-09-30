@@ -28,6 +28,12 @@ const meta: Meta<typeof CalenderRoot> = {
   args: {},
   argTypes: {},
   tags: ["autodocs"],
+  parameters: {
+    backgrounds: {
+      default: "black",
+      values: [{ name: "black", value: "#0a0a0a" }],
+    },
+  },
 };
 
 export default meta;

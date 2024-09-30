@@ -183,7 +183,6 @@ function CalendarHeaderChooser({
   const handleChange = useCallback((val: string) => {
     onValueChange(Number(val));
   }, []);
-  console.log({ type, value, selectItems });
   return (
     <div data-type={type}>
       <Select.Root

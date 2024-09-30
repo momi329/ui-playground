@@ -7,6 +7,12 @@ import { SliderInput } from "./components/sliderInput";
 const meta: Meta<typeof Slider.Root> = {
   title: "components/Slider",
   component: Slider.Root,
+  parameters: {
+    backgrounds: {
+      default: "black",
+      values: [{ name: "black", value: "#0a0a0a" }],
+    },
+  },
 };
 
 export default meta;
