@@ -26,9 +26,9 @@ type SliderStoryArgs = {
 
 export const SliderStory: BasicSliderStory = {
   args: {
-    min: 100,
+    min: 10,
     max: 200,
-    step: 100,
+    step: 10,
   },
   render: (args: SliderStoryArgs) => {
     const { min, max, step } = args;
@@ -37,12 +37,6 @@ export const SliderStory: BasicSliderStory = {
 
     const [errMsg, setErrMsg] = useState<string>("");
 
-    const sliderStates = {
-      minValue,
-      setMinValue,
-      maxValue,
-      setMaxValue,
-    };
 
     useEffect(() => {
       if (min < max) {
@@ -63,17 +57,20 @@ export const SliderStory: BasicSliderStory = {
           errMsg={errMsg}
         />
         <Slider.Root
+          className=" w-64 h-4 pt-2 mb-2"
           min={min}
           max={max}
           step={step}
-          {...sliderStates}
-          className="w-64"
+          minValue={minValue}
+          setMinValue={setMinValue}
+          maxValue={maxValue}
+          setMaxValue={setMaxValue}
         >
-          <Slider.Rail>
-            <Slider.InnerRail />
-          </Slider.Rail>
           <Slider.Input tag="less" />
           <Slider.Input tag="more" />
+          <Slider.Rail>
+            <Slider.InnerRail className="bg-primary-500" />
+          </Slider.Rail>
         </Slider.Root>
       </div>
     );
@@ -111,14 +108,6 @@ export const SliderInputStory: BasicSliderStory = {
       }
     }, [min, max, step]);
 
-    const sliderStates = {
-      minValue,
-      setMinValue,
-      maxValue,
-      setMaxValue,
-      value: inputValue,
-      setValue: setInputValue,
-    };
     return (
       <div className="flex gap-2 flex-col mx-auto items-center">
         <SliderInfo
@@ -133,7 +122,10 @@ export const SliderInputStory: BasicSliderStory = {
             min={min}
             max={max}
             step={step}
-            {...sliderStates}
+            minValue={minValue}
+            setMinValue={setMinValue}
+            maxValue={maxValue}
+            setMaxValue={setMaxValue}
           >
             <Slider.Input tag="less" />
             <Slider.Input tag="more" />
@@ -143,10 +135,15 @@ export const SliderInputStory: BasicSliderStory = {
           </Slider.Root>
 
           <SliderInput.Root
-            {...sliderStates}
             min={min}
             max={max}
             step={step}
+            minValue={minValue}
+            setMinValue={setMinValue}
+            maxValue={maxValue}
+            setMaxValue={setMaxValue}
+            value={inputValue}
+            setInputValue={setInputValue}
             className="flex justify-between w-full ml-2"
           >
             <div>

@@ -21,7 +21,7 @@ type SliderInputRootProps = React.ComponentPropsWithoutRef<"div"> & {
   maxValue: number;
   setMaxValue: Dispatch<SetStateAction<number>>;
   value: Record<"min" | "max", number>;
-  setValue: Dispatch<SetStateAction<Record<"min" | "max", number>>>;
+  setInputValue: Dispatch<SetStateAction<Record<"min" | "max", number>>>;
   min: number;
   max: number;
   step: number;
@@ -43,7 +43,7 @@ const SliderInputRoot = forwardRef<
       setMinValue,
       setMaxValue,
       value,
-      setValue,
+      setInputValue,
       min,
       max,
       step,
@@ -59,7 +59,7 @@ const SliderInputRoot = forwardRef<
         setMinValue,
         setMaxValue,
         value,
-        setValue,
+        setInputValue,
         min,
         max,
         step,
@@ -70,7 +70,7 @@ const SliderInputRoot = forwardRef<
         setMinValue,
         setMaxValue,
         value,
-        setValue,
+        setInputValue,
         min,
         max,
         step,
@@ -78,7 +78,7 @@ const SliderInputRoot = forwardRef<
     );
 
     useEffect(() => {
-      setValue({ min: minValue, max: maxValue });
+      setInputValue({ min: minValue, max: maxValue });
     }, [minValue, maxValue]);
 
     return (
@@ -156,7 +156,7 @@ const SliderInputComponent = forwardRef<
       setMinValue,
       setMaxValue,
       value,
-      setValue,
+      setInputValue,
     } = useContext(SliderInputContext);
 
     function handleChange(changeType: "min" | "max", val: string) {
@@ -165,16 +165,16 @@ const SliderInputComponent = forwardRef<
         if (+val > maxValue) newV = maxValue - 1 > min ? maxValue - 1 : min;
         if (+val < min) newV = min;
         setMinValue(newV);
-        setValue((prev) => ({ ...prev, min: newV }));
+        setInputValue((prev) => ({ ...prev, min: newV }));
       } else {
         if (+val > max) newV = max;
         if (+val < minValue) newV = minValue + 1 < max ? minValue + 1 : max;
         setMaxValue(newV);
-        setValue((prev) => ({ ...prev, max: newV }));
+        setInputValue((prev) => ({ ...prev, max: newV }));
       }
     }
     function handleOnChange(changeEvent: React.ChangeEvent<HTMLInputElement>) {
-      setValue((prev) => ({
+      setInputValue((prev) => ({
         ...prev,
         [type]: changeEvent.target.value,
       }));
