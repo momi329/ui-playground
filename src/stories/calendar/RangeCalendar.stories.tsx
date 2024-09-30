@@ -6,27 +6,67 @@ import { RangeCalendarRoot } from "./components/range-calendar";
 import { RangeCalendarHeader } from "./components/range-calendar-header";
 import { RangeCalendarItem } from "./components/range-calendar-item";
 import {
+  RangeCalendarInput,
   RangeCalendarMDrawer,
-  RangeMCalendarInput,
 } from "./components/range-calendar-m";
-import {
-  SingleCalendarComponent,
-  SingleCalendarRoot,
-} from "./components/single-calendar";
+
 import { CalenderRoot } from "./provider/config-provider";
 
-import type {
-  RangeCalendarValue,
-  RangePosition,
-  SingleCalendarValue,
-} from "./types/types";
-import { omitTimeFromDate, transDateIntoString } from "./utils/utils";
+import type { RangeCalendarValue, RangePosition } from "./types/types";
+import { omitTimeFromDate } from "./utils/utils";
 
 const meta: Meta<typeof CalenderRoot> = {
-  title: "components/Calendar",
+  title: "components/RangeCalendar",
   component: CalenderRoot,
-  args: {},
-  argTypes: {},
+  args: {
+    minDate: new Date(2024, 0, 1),
+    maxDate: new Date(2025, 0, 25),
+    startText: "去程",
+    endText: "回程",
+    weekdays: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+  },
+  argTypes: {
+    minDate: {
+      control: "date",
+      description: "最小日期",
+    },
+    maxDate: {
+      control: "date",
+      description: "最大日期",
+    },
+    weekdays: {
+      control: "select",
+      description: "星期",
+      options: [
+        ["日", "一", "二", "三", "四", "五", "六"],
+        ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      ],
+    },
+    startText: {
+      control: "text",
+      description: "選擇去程按鈕的字",
+    },
+    endText: {
+      control: "text",
+      description: "選擇回程按鈕的字",
+    },
+    dayColor: {
+      control: "object",
+      description: "日期樣式",
+      defaultValue: {
+        idle: "text-slate-200",
+        active: `text-white-500`,
+        disabled: "text-slate-500",
+        isRangeStart: `rounded-none text-white-500`,
+        isRangeBefore:
+          "bg-primary-700 bg-opacity-25 z-[-3] absolute w-1/2 h-full bg-opacity-25 ",
+        isRangeAfter:
+          "bg-primary-700 desktop:size-10 laptop:size-10  size-[45px] rounded-full absolute z-[-2]",
+        isRangeEnd: `rounded-none text-white-500 `,
+        isRange: `bg-primary-700 bg-opacity-25 rounded-none `,
+      },
+    },
+  },
   tags: ["autodocs"],
   parameters: {
     backgrounds: {
@@ -39,48 +79,14 @@ const meta: Meta<typeof CalenderRoot> = {
 export default meta;
 type Story = StoryObj<typeof CalenderRoot>;
 
-export const SingleCalendarStory: Story = {
-  render: function Component() {
-    const [value, setValue] = useState<SingleCalendarValue>();
-    const handleChange = (val: SingleCalendarValue) => {
-      setValue(val);
-    };
-    const configSettings = {
-      defaultMonth: new Date(2024, 2, 5),
-      minDate: new Date(1924, 1, 1),
-      maxDate: new Date(2024, 4, 22),
-      selectText: "折扣",
-    };
-    const singleProps = {
-      value,
-      onChange: (val: Date) => handleChange(val),
-    };
-    return (
-      <div className="flex w-96 ">
-        <CalenderRoot value={configSettings}>
-          <SingleCalendarRoot {...singleProps} {...singleProps}>
-            <SingleCalendarComponent />
-          </SingleCalendarRoot>
-        </CalenderRoot>
-      </div>
-    );
-  },
-};
-
 export const RangeCalendarStory: Story = {
-  render: function Component() {
+  render: function Component(args) {
+    const { minDate, maxDate, weekdays, startText, endText, dayColor } = args;
     const [open, setOpen] = useState(false); // 控制M版開啟
     const [value, setValue] = useState<RangeCalendarValue>({
       start: undefined,
       end: undefined,
     }); // 日期值
-
-    const configSettings = {
-      minDate: new Date(2024, 0, 1),
-      maxDate: new Date(2025, 0, 25),
-      startText: "去程",
-      endText: "回程",
-    };
 
     const [curMonth, setCurMonth] = useState<Date>(
       omitTimeFromDate(new Date())
@@ -131,30 +137,16 @@ export const RangeCalendarStory: Story = {
 
     return (
       <>
-        <div className="hidden desktop:block laptop:block m-1 ">
-          <label className="relative">
-            <span className="absolute top-0 left-2 ">START</span>
-            <input
-              type="text"
-              className="w-45 h-8 border border-slate-200 rounded pl-13 text-slate-200"
-              value={transDateIntoString(value.start || new Date())}
-              onFocus={() => setChangingPosition("start")}
-              readOnly
-            />
-          </label>
-          <label className="relative">
-            <span className="absolute top-0 left-2 ">END</span>
-            <input
-              type="text"
-              className="w-45 h-8 border border-slate-200 rounded pl-13 text-slate-200"
-              value={transDateIntoString(value.end || new Date())}
-              onFocus={() => setChangingPosition("end")}
-              readOnly
-            />
-          </label>
-        </div>
-        <CalenderRoot value={configSettings}>
+        <CalenderRoot
+          minDate={minDate}
+          maxDate={maxDate}
+          startText={startText}
+          endText={endText}
+          weekdays={weekdays}
+          dayColor={dayColor}
+        >
           <RangeCalendarRoot {...rangeProps}>
+            <RangeCalendarInput className="hidden desktop:flex laptop:flex" />
             <div className="hidden desktop:flex laptop:flex">
               <RangeCalendarItem
                 className="w-[284px] border "
@@ -198,7 +190,7 @@ export const RangeCalendarStory: Story = {
               />
             </div>
             <div className="flex desktop:hidden laptop:hidden">
-              <RangeCalendarMDrawer inputControl={<RangeMCalendarInput />} />
+              <RangeCalendarMDrawer inputControl={<RangeCalendarInput />} />
             </div>
           </RangeCalendarRoot>
         </CalenderRoot>

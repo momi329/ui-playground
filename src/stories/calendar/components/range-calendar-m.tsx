@@ -9,34 +9,38 @@ import { CalendarChevron, CalendarWeekday } from "./calendar";
 import { RangeCalendarMHeader } from "./range-calendar-header";
 import { RangeCalendarItem } from "./range-calendar-item";
 
-type RangeMCalendarInputProps = ComponentPropsWithoutRef<"div">;
-function RangeMCalendarInput({
-  className,
-  ...props
-}: RangeMCalendarInputProps) {
+type RangeCalendarInputProps = ComponentPropsWithoutRef<"div">;
+
+function RangeCalendarInput({ className, ...props }: RangeCalendarInputProps) {
   const { value, setChangingPosition } = useRangeContext();
   return (
     <div className={cn("", className)} {...props}>
-      <label className="relative">
-        <span className="absolute top-0 left-2 ">START</span>
-        <input
-          type="text"
-          className="w-45 h-8 border border-slate-500 rounded pl-13 text-slate-200"
-          value={transDateIntoString(value.start as Date)}
-          onFocus={() => setChangingPosition("start")}
-          readOnly
-        />
-      </label>
-      <label className="relative">
-        <span className="absolute top-0 left-2 ">END</span>
-        <input
-          type="text"
-          className="w-45 h-8 border border-slate-500 rounded pl-13 text-slate-200"
-          value={transDateIntoString(value.end as Date)}
-          onFocus={() => setChangingPosition("end")}
-          readOnly
-        />
-      </label>
+      <div className=" flex flex-row gap-2 laptop:flex m-1 w-fit mb-3">
+        <label className="relative">
+          <span className="absolute top-[calc(50%-12px)] text-pink-300 left-2">
+            START
+          </span>
+          <input
+            type="text"
+            className="bg-transparent w-[200px] h-8 border border-pink-300 rounded pl-16 text-pink-500"
+            value={transDateIntoString(value.start || new Date())}
+            onFocus={() => setChangingPosition("start")}
+            readOnly
+          />
+        </label>
+        <label className="relative">
+          <span className="absolute top-[calc(50%-12px)] text-pink-300 left-2">
+            END
+          </span>
+          <input
+            type="text"
+            className="bg-transparent w-[200px] h-8 border border-pink-300 rounded pl-16 text-pink-500"
+            value={transDateIntoString(value.end || new Date())}
+            onFocus={() => setChangingPosition("end")}
+            readOnly
+          />
+        </label>
+      </div>
     </div>
   );
 }
@@ -195,8 +199,4 @@ function RangeCalendarMDrawer({ inputControl }: RangeCalendarMDrawerProps) {
   );
 }
 
-export {
-  RangeCalendarMDrawer,
-  RangeCalendarMDrawerHeader,
-  RangeMCalendarInput,
-};
+export { RangeCalendarMDrawer, RangeCalendarMDrawerHeader, RangeCalendarInput };
