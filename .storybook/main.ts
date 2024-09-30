@@ -10,8 +10,12 @@ const config: StorybookConfig = {
     "@storybook/addon-interactions",
   ],
   framework: {
-    name: '@storybook/experimental-nextjs-vite',
+    name: "@storybook/experimental-nextjs-vite",
     options: {},
+  },
+  docs: {
+    //👇 See the table below for the list of supported options
+    defaultName: "Documentation",
   },
 };
 export default config;

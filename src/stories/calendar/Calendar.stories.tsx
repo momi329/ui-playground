@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-undef */
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { CalendarWeekday } from "./components/calendar";
 import { RangeCalendarRoot } from "./components/range-calendar";
@@ -14,7 +14,8 @@ import {
   SingleCalendarRoot,
 } from "./components/single-calendar";
 import { CalenderRoot } from "./provider/config-provider";
-import {
+
+import type {
   RangeCalendarValue,
   RangePosition,
   SingleCalendarValue,
@@ -26,46 +27,11 @@ const meta: Meta<typeof CalenderRoot> = {
   component: CalenderRoot,
   args: {},
   argTypes: {},
+  tags: ["autodocs"],
 };
 
 export default meta;
 type Story = StoryObj<typeof CalenderRoot>;
-
-function Doc() {
-  return (
-    <div className=" m-1 size-fit">
-      <label className="p-1 bg-blue-400 rounded text-white-500 h5-bold">
-        <a href="https://separate-tempo-553.notion.site/Calendar-ui-library-f43fe92592934d6fad7000e82ecacd41">
-          🚀點我看文件
-        </a>
-        <input type="text" id="notion-link" readOnly className="hidden" />
-      </label>
-    </div>
-  );
-}
-
-type DisplayItem = { title: string; value: string; dataAttr?: string };
-
-function ConfigDisplay({ displayData }: { displayData: DisplayItem[] }) {
-  return (
-    <div className=" gap-1 m-2 w-1/3 max-w-[300px] text-slate-200 ">
-      {displayData.map((item) => {
-        const key = item.title + item.value;
-        return (
-          <div
-            className="flex justify-between border-b border-slate-200"
-            key={key}
-          >
-            <div className="">{item.title}</div>{" "}
-            <div {...{ [`data-${item.dataAttr}`]: item.value }}>
-              {item.value}
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
 
 export const SingleCalendarStory: Story = {
   render: function Component() {
@@ -90,9 +56,6 @@ export const SingleCalendarStory: Story = {
             <SingleCalendarComponent />
           </SingleCalendarRoot>
         </CalenderRoot>
-        <div>
-          <Doc />
-        </div>
       </div>
     );
   },
@@ -159,22 +122,7 @@ export const RangeCalendarStory: Story = {
       open,
       setOpen,
     };
-    const displayData = [
-      {
-        title: "minDate",
-        value: transDateIntoString(configSettings.minDate),
-      },
-      {
-        title: "maxDate",
-        value: transDateIntoString(configSettings.maxDate),
-      },
-      {
-        title: "去程/回程",
-        value: `${transDateIntoString(
-          value.start || new Date()
-        )} ${transDateIntoString(value.end || new Date())}`,
-      },
-    ];
+
     return (
       <>
         <div className="hidden desktop:block laptop:block m-1 ">
@@ -248,10 +196,6 @@ export const RangeCalendarStory: Story = {
             </div>
           </RangeCalendarRoot>
         </CalenderRoot>
-        <div className="mt-3">
-          <Doc />
-          <ConfigDisplay displayData={displayData} />
-        </div>
       </>
     );
   },
